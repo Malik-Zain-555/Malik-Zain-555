@@ -98,45 +98,99 @@ I build seamless digital experiences—beautiful UIs, robust backends, mobile ap
 
 ---
 
-## ✨ Featured Projects
+<table>
+<tr>
+<td width="33%" align="center">
 
-<div align="center" style="margin-bottom: 24px;">
-  
-  <!-- Zylo Project -->
-  <div style="background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%); border-radius: 18px; padding: 24px 18px; margin-bottom: 18px; box-shadow: 0 4px 24px #1e3c7222;">
-    <img src="https://previews.dropbox.com/p/thumb/ACwBqXgIgUNsHvudQJ-ePXrSD6vHaTuRGWWL7CUrugid6H8ohGL-J0NtPukRTrweb4-t2DMWo6c0Hi0EO3NrdFKPByp3bExr87wL_Nef2sJCeC80TL9cBpBqZ9r7Qb7enNWcgyPeKiNzP4aqqR-obc4B1hwGp2WzA5_8YuAhjxA7Rz0bAcFncyJh27o22c_czZ8nlm52_HP-SyLDK4-8TgzxaCM3MUC0DLt8Ufy0CNy_b4RqJ6Ag5Uj3nE3HCRIUEdWXV63Mg3wkxevrIZERg2cYokVOCY3suSOAVostBmDF4ulcCgMl_ROX64hQtSVc_riPnT2s4KP4ssgW-b71Gemr/p.png?is_prewarmed=true" alt="Zylo Logo" width="110" style="border-radius: 50%; margin-bottom: 8px;" />
-    <h3 style="color:#36BCF7; margin:10px 0 5px 0;">🌟 Zylo – Full Stack Social Adventure</h3>
-    <p style="color:#eee;">My first ever completed full-stack project! A modern web app showcasing my journey from frontend to full-stack development.</p>
-    <a href="https://github.com/Zain-Ali-555/Zylo">
-      <img src="https://img.shields.io/badge/🚀_Check it out!-blue?style=for-the-badge" />
-    </a>
-    <br />
-    <span style="color:#fff;"><b>Stack:</b> React.js, Node.js, Express.js, MySQL, CSS3</span>
-    <br />
-    <span style="color:#00e676;">✅ Completed</span>
-  </div>
+## 🌐 **ZYLO**
+### *Full Stack Social Platform*
 
-  <!-- Upcoming Mobile Project -->
-  <div style="background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%); border-radius: 18px; padding: 24px 18px; margin-bottom: 18px; box-shadow: 0 4px 24px #11998e22;">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" width="60" style="margin-bottom: 8px;" />
-    <h3 style="color:#fff; margin:10px 0 5px 0;">📱 NextGen Mobile App (Coming Soon)</h3>
-    <p style="color:#eee;">My upcoming premium cross-platform mobile app—built with Flutter & Dart, blending UI beauty with native performance.</p>
-    <span style="color:#fff;"><b>Stack:</b> Flutter, Dart, Android Studio, Firebase</span>
-    <br />
-    <span style="color:#ffea00;">🛠️ In Progress</span>
-  </div>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="45" height="45"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" width="45" height="45"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" width="45" height="45"/>
 
-  <!-- Upcoming Game Project -->
-  <div style="background: linear-gradient(90deg, #8360c3 0%, #2ebf91 100%); border-radius: 18px; padding: 24px 18px; box-shadow: 0 4px 24px #8360c322;">
-    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg" width="60" style="margin-bottom: 8px;" />
-    <h3 style="color:#fff; margin:10px 0 5px 0;">🕹️ Indie Game Experience (Coming Soon)</h3>
-    <p style="color:#eee;">Venturing into game dev! Building my first Unity-powered game—original mechanics, immersive worlds, premium polish.</p>
-    <span style="color:#fff;"><b>Stack:</b> Unity, C#, Blender</span>
-    <br />
-    <span style="color:#ffea00;">🛠️ In Progress</span>
-  </div>
+<br/>
 
-</div>
+[![🚀 Live Demo](https://img.shields.io/badge/🚀_Live_Demo-00FFFF?style=for-the-badge)](https://github.com/Zain-Ali-555/Zylo)
+[![</> Source](https://img.shields.io/badge/</>_Source-1F222E?style=for-the-badge&logo=github)](https://github.com/Zain-Ali-555/Zylo)
+
+<br/>
+
+**Tech Stack:** React • Node.js • Express • MySQL  
+
+🛡️ **Highlights:**
+- 🔐 Secure Authentication  
+- 💬 Real-time Messaging  
+- 📊 Interactive Dashboards  
+- 🎨 Fully Responsive UI  
+- ⚡ Lightning-fast Performance  
+
+![Status](https://img.shields.io/badge/STATUS-✅_LIVE-00FF00?style=flat-square)
+![Version](https://img.shields.io/badge/VERSION-1.0.0-blue?style=flat-square)
+
+</td>
+
+<td width="33%" align="center">
+
+## 📱 **MOBILE INNOVATE**
+### *Cross-Platform Excellence (Upcoming)*
+
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/flutter/flutter-original.svg" width="45" height="45"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dart/dart-original.svg" width="45" height="45"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/firebase/firebase-plain.svg" width="45" height="45"/>
+
+<br/>
+
+[![🕐 Planned Project](https://img.shields.io/badge/🕐_Planned_Project-FF6B6B?style=for-the-badge)](#)
+[![📅 Coming Soon](https://img.shields.io/badge/📅_Coming_Soon-1F222E?style=for-the-badge)](#)
+
+<br/>
+
+**Tech Stack (Planned):** Flutter • Dart • Firebase • REST APIs  
+
+💡 **Goals:**
+- ⚙️ Native Performance  
+- 🎨 Smooth Animations  
+- 🔄 State Management  
+- 🌙 Dark Mode Ready  
+- 🔔 Push Notifications  
+
+![Status](https://img.shields.io/badge/STATUS-🧩_PLANNED-grey?style=flat-square)
+![Launch](https://img.shields.io/badge/LAUNCH-DATE_TBA-lightgrey?style=flat-square)
+
+</td>
+
+<td width="33%" align="center">
+
+## 🎮 **GAME REALM**
+### *Unity Adventure (Starting Oct 14)*
+
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/unity/unity-original.svg" width="45" height="45"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" width="45" height="45"/>
+
+<br/>
+
+[![🎯 Working On](https://img.shields.io/badge/🎯_Starting_Soon-9D4EDD?style=for-the-badge)](#)
+[![📅 Launch_14_Oct](https://img.shields.io/badge/📅_Launch_14_Oct-1F222E?style=for-the-badge)](#)
+
+<br/>
+
+**Tech Stack (Planned):** Unity • C#  
+
+🎮 **Expected Features:**
+- 🕹️ Engaging Mechanics  
+- 🎨 Custom 3D Assets  
+- 🎵 Adaptive Sound Design  
+- 🏆 Achievement System  
+- 🌍 Immersive Environments  
+
+![Status](https://img.shields.io/badge/STATUS-🎨_WORKING_STAGE-9D4EDD?style=flat-square)
+![Stage](https://img.shields.io/badge/STAGE-PRE_ALPHA-purple?style=flat-square)
+
+</td>
+</tr>
+</table>
+
 
 ---
 
