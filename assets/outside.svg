@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="214" viewBox="0 0 1200 214" fill="none" role="img" aria-label="Outside the editor: Tekken, gaming, anime and movies, curiosity">
+<title>Outside the editor: Tekken, gaming, anime and movies, curiosity</title>
+<defs>
+<linearGradient id="aur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<clipPath id="card"><rect width="1200" height="214" rx="24"/></clipPath>
+<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff" fill-opacity=".09"/></pattern>
+<radialGradient id="fadeg" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+<mask id="fade"><rect width="1200" height="214" fill="url(#fadeg)"/></mask>
+<filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="55"/></filter>
+<filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
+</defs>
+<g>
+
+<g transform="translate(0 0)">
+  <rect x=".5" y=".5" width="281" height="213" rx="22" fill="#0B0D1A" stroke="#1B1F3B"/>
+  <circle cx="262" cy="14" r="70" fill="#22D3EE" fill-opacity=".14" filter="url(#blur)"/>
+  <g transform="translate(26 26)" filter="url(#glow)"><rect width="52" height="52" rx="15" fill="#22D3EE" fill-opacity=".12" stroke="#22D3EE" stroke-opacity=".5"/><path d="M15 15 L37 37 M37 15 L15 37" stroke="#22D3EE" stroke-width="4" stroke-linecap="round"/></g>
+  <text x="26" y="116" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="19" font-weight="800" fill="#E6E8F5">Fighting-game arc</text><text x="26" y="142" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">Tekken is movement, timing, and</text><text x="26" y="162" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">execution. Kazuya is my main.</text><rect x="26" y="194" width="40" height="3" rx="1.5" fill="#22D3EE"/></g>
+<g transform="translate(306 0)">
+  <rect x=".5" y=".5" width="281" height="213" rx="22" fill="#0B0D1A" stroke="#1B1F3B"/>
+  <circle cx="262" cy="14" r="70" fill="#8B5CF6" fill-opacity=".14" filter="url(#blur)"/>
+  <g transform="translate(26 26)" filter="url(#glow)"><rect width="52" height="52" rx="15" fill="#8B5CF6" fill-opacity=".12" stroke="#8B5CF6" stroke-opacity=".5"/><rect x="21" y="11" width="10" height="30" rx="3" fill="#8B5CF6"/><rect x="11" y="21" width="30" height="10" rx="3" fill="#8B5CF6"/></g>
+  <text x="26" y="116" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="19" font-weight="800" fill="#E6E8F5">Gaming</text><text x="26" y="142" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">Free Fire, Clash of Clans,</text><text x="26" y="162" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">Clash Royale, and whatever's</text><text x="26" y="182" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">next.</text><rect x="26" y="194" width="40" height="3" rx="1.5" fill="#8B5CF6"/></g>
+<g transform="translate(612 0)">
+  <rect x=".5" y=".5" width="281" height="213" rx="22" fill="#0B0D1A" stroke="#1B1F3B"/>
+  <circle cx="262" cy="14" r="70" fill="#F472B6" fill-opacity=".14" filter="url(#blur)"/>
+  <g transform="translate(26 26)" filter="url(#glow)"><rect width="52" height="52" rx="15" fill="#F472B6" fill-opacity=".12" stroke="#F472B6" stroke-opacity=".5"/><path d="M20 14 L39 26 L20 38 Z" fill="#F472B6" stroke="#F472B6" stroke-width="2" stroke-linejoin="round"/></g>
+  <text x="26" y="116" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="19" font-weight="800" fill="#E6E8F5">Anime &amp; movies</text><text x="26" y="142" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">High-energy action, darker</text><text x="26" y="162" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">stories, and films with</text><text x="26" y="182" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">emotional damage.</text><rect x="26" y="194" width="40" height="3" rx="1.5" fill="#F472B6"/></g>
+<g transform="translate(918 0)">
+  <rect x=".5" y=".5" width="281" height="213" rx="22" fill="#0B0D1A" stroke="#1B1F3B"/>
+  <circle cx="262" cy="14" r="70" fill="#FBBF24" fill-opacity=".14" filter="url(#blur)"/>
+  <g transform="translate(26 26)" filter="url(#glow)"><rect width="52" height="52" rx="15" fill="#FBBF24" fill-opacity=".12" stroke="#FBBF24" stroke-opacity=".5"/><circle cx="23" cy="23" r="9.5" stroke="#FBBF24" stroke-width="4"/><path d="M30.5 30.5 L39 39" stroke="#FBBF24" stroke-width="4" stroke-linecap="round"/></g>
+  <text x="26" y="116" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="19" font-weight="800" fill="#E6E8F5">Curiosity mode</text><text x="26" y="142" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">I like knowing how tools work</text><text x="26" y="162" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">under the hood, not just which</text><text x="26" y="182" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14" fill="#AEB4D6">button to press.</text><rect x="26" y="194" width="40" height="3" rx="1.5" fill="#FBBF24"/></g>
+</g>
+
+</svg>

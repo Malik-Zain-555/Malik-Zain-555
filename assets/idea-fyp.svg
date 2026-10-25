@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="268" viewBox="0 0 400 268" fill="none" role="img" aria-label="Concept: Problem-First FYP">
+<title>Concept: Problem-First FYP</title>
+<defs>
+<linearGradient id="aur" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22D3EE"/><stop offset=".5" stop-color="#8B5CF6"/><stop offset="1" stop-color="#F472B6"/></linearGradient>
+<clipPath id="card"><rect width="400" height="268" rx="24"/></clipPath>
+<pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff" fill-opacity=".09"/></pattern>
+<radialGradient id="fadeg" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+<mask id="fade"><rect width="400" height="268" fill="url(#fadeg)"/></mask>
+<filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="55"/></filter>
+<filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
+</defs>
+<g clip-path="url(#card)"><rect width="400" height="268" fill="#0B0D1A"/><rect width="400" height="268" fill="url(#dots)" mask="url(#fade)"/><circle cx="370" cy="10" r="110" fill="#FBBF24" fill-opacity="0.16" filter="url(#blur)"/>
+
+<rect x="32" y="30" width="112" height="26" rx="13" fill="#FBBF24" fill-opacity=".12" stroke="#FBBF24" stroke-opacity=".5"/>
+<circle cx="50" cy="43" r="3.5" fill="#FBBF24" opacity=".35"><animate attributeName="r" values="3.5;10.5;3.5" dur="2.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".45;0;.45" dur="2.2s" begin="1.4s" repeatCount="indefinite"/></circle><circle cx="50" cy="43" r="3.5" fill="#FBBF24"/>
+<text x="62" y="48" font-family="ui-monospace,'SF Mono',SFMono-Regular,'JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="11.5" letter-spacing="2" fill="#FBBF24">CONCEPT</text>
+<text x="32" y="102" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="26" font-weight="800" letter-spacing="-.4" fill="#E6E8F5">Problem-First FYP</text>
+<text x="32" y="136" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14.5" fill="#AEB4D6">A BSCS final-year product that solves a</text><text x="32" y="158" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14.5" fill="#AEB4D6">real student or workflow problem. Users</text><text x="32" y="180" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14.5" fill="#AEB4D6">first, tech second, and AI only when it</text><text x="32" y="202" font-family="'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" font-size="14.5" fill="#AEB4D6">adds real capability.</text><text x="32" y="244" font-family="ui-monospace,'SF Mono',SFMono-Regular,'JetBrains Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="11.5" letter-spacing="1.5" fill="#8B91B5">NOT A LAUNCH · AN IDEA TO BUILD</text><rect x="-240" y="265" width="240" height="3" fill="#FBBF24" opacity=".9"><animate attributeName="x" from="-240" to="400" dur="7s" begin="2s" repeatCount="indefinite"/></rect>
+</g>
+<rect x=".5" y=".5" width="399" height="267" rx="24" stroke="#1B1F3B"/>
+</svg>
