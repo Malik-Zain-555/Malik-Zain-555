@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Challenge Zain — plays one round of STRIKE / THROW / GUARD for a GitHub issue,
+"""Play a round vs Zain — plays one round of STRIKE / THROW / GUARD for a GitHub issue,
 updates game/state.json and redraws assets/scoreboard.svg.
 
-Triangle (classic fighting-game logic):  STRIKE beats THROW · THROW beats GUARD · GUARD beats STRIKE
+STRIKE beats THROW · THROW beats GUARD · GUARD beats STRIKE
 Env in: ISSUE_TITLE ("fight|strike"), ISSUE_USER (login).  Out: result.md (issue comment).
 """
 import json
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from arcade import *  # noqa: E402,F401,F403
+from ui import *  # noqa: E402,F401,F403
 
 ROOT = Path(__file__).resolve().parents[2]
 STATE = ROOT / "game" / "state.json"
@@ -23,8 +23,7 @@ DEFAULT = {"visitor_wins": 0, "zain_wins": 0, "draws": 0, "rounds": 0, "streak":
 
 def load():
     try:
-        s = json.loads(STATE.read_text(encoding="utf-8"))
-        return {**DEFAULT, **s}
+        return {**DEFAULT, **json.loads(STATE.read_text(encoding="utf-8"))}
     except Exception:
         return dict(DEFAULT)
 
@@ -36,30 +35,24 @@ def judge(you, zain):
 
 
 def render_scoreboard(s):
-    W, H = 880, 392
-    body = mono(28, 42, "ARENA SCOREBOARD", 14, GOLD, ls=4)
-    body += mono(W - 28, 42, f"ROUNDS PLAYED  {s['rounds']}", 13, DIM, "end", 2)
-    body += f'<line x1="28" y1="58" x2="{W - 28}" y2="58" stroke="{EDGE}"/>'
-    body += mono(220, 96, "CHALLENGERS", 14, CYA, "middle", 5)
-    body += disp(220, 178, s["visitor_wins"], 96, CYA, "middle")
-    body += mono(660, 96, "ZAIN", 14, GOLD, "middle", 5)
-    body += disp(660, 178, s["zain_wins"], 96, "url(#gold)", "middle")
-    body += (f'<g transform="translate(440 150)"><g>{AT("scale", [1, 1.18, 1], dur=1.6)}'
-             + disp(0, 22, "VS", 78, RED, "middle", 'stroke="#000" stroke-width="5" paint-order="stroke"') + "</g></g>")
-    body += mono(440, 214, f"DRAWS {s['draws']}   ·   CHALLENGER STREAK {s['streak']}   ·   BEST STREAK {s['best_streak']}", 13, SOFT, "middle", 1.5)
-    body += f'<line x1="28" y1="232" x2="{W - 28}" y2="232" stroke="{EDGE}"/>'
-    body += mono(28, 256, "LAST ROUNDS", 12, DIM, ls=4)
+    W, H = 880, 372
+    body = mono(32, 44, "SCOREBOARD", 12, OR, ls=3) + mono(W - 32, 44, f"ROUNDS PLAYED  {s['rounds']}", 12, MUT, "end", 1.5)
+    body += f'<line x1="32" y1="62" x2="{W - 32}" y2="62" stroke="{LINE}"/>'
+    body += mono(220, 100, "CHALLENGERS", 12, SOFT, "middle", 3) + serif(220, 178, s["visitor_wins"], 84, MINT, "middle")
+    body += mono(660, 100, "ZAIN", 12, SOFT, "middle", 3) + serif(660, 178, s["zain_wins"], 84, OR, "middle")
+    body += serif(440, 160, "vs", 38, MUT, "middle", True)
+    body += mono(440, 214, f"DRAWS {s['draws']}   ·   CURRENT STREAK {s['streak']}   ·   BEST STREAK {s['best_streak']}", 12, SOFT, "middle", 1)
+    body += f'<line x1="32" y1="234" x2="{W - 32}" y2="234" stroke="{LINE}"/>' + mono(32, 258, "LAST ROUNDS", 11, MUT, ls=3)
     if not s["recent"]:
-        body += f'<g>{blink(2.4)}' + mono(440, 312, "NO FIGHTS YET — BE THE FIRST CHALLENGER", 15, SOFT, "middle", 2) + "</g>"
-    y = 284
+        body += f'<g>{blink(2.4)}' + serif(440, 320, "No fights yet. Be the first challenger.", 20, SOFT, "middle", True) + "</g>"
+    y = 288
     for r in s["recent"][:5]:
-        col, label = {"win": (CYA, "YOU WIN"), "lose": (GOLD, "ZAIN WINS"), "draw": (DIM, "DRAW")}[r["result"]]
-        body += mono(28, y, "@" + r["user"][:22], 15, WHT)
-        body += mono(340, y, f"{r['you'].upper()}  vs  {r['zain'].upper()}", 14, SOFT, ls=1)
-        body += disp(W - 28, y + 1, label, 19, col, "end")
+        col, label = {"win": (MINT, "you win"), "lose": (OR, "Zain wins"), "draw": (MUT, "draw")}[r["result"]]
+        body += mono(32, y, "@" + r["user"][:22], 13, TX) + mono(330, y, f"{r['you'].upper()}  vs  {r['zain'].upper()}", 12, SOFT, ls=1)
+        body += serif(W - 32, y + 1, label, 16, col, "end", True)
         y += 22
-    body += sweep(W, H, dur=5)
-    return svg(W, H, body, f"Arena scoreboard: challengers {s['visitor_wins']}, Zain {s['zain_wins']}", glows=[(220, 140, 150, CYA, 0.12), (660, 140, 150, GOLD, 0.12)])
+    body += tick(W, H - 1, OR, 6)
+    return svg(W, H, body, f"Scoreboard: challengers {s['visitor_wins']}, Zain {s['zain_wins']}")
 
 
 def main():
@@ -91,9 +84,7 @@ def main():
     (ROOT / "result.md").write_text(
         f"## Round {s['rounds']}\n\n@{user} chose **{choice.upper()}** · Zain chose **{zain.upper()}**\n\n{verdict}\n\n"
         f"Score: challengers **{s['visitor_wins']}** · Zain **{s['zain_wins']}** · draws **{s['draws']}**\n\n"
-        "The profile scoreboard updates within a minute or two. Thanks for playing!\n",
-        encoding="utf-8",
-    )
+        "The profile scoreboard updates within a minute or two. Thanks for playing!\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

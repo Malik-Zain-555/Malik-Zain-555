@@ -1,4 +1,4 @@
-name: Challenge Zain (fight game)
+name: Play a round vs Zain
 
 # Visitors click STRIKE / THROW / GUARD on the profile -> a pre-filled issue opens
 # -> this workflow plays the round, updates the scoreboard, comments the result and closes the issue.

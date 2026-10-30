@@ -1,4 +1,4 @@
-name: Battle Log (live stats)
+name: Contribution log
 
 on:
   schedule:
