@@ -1,112 +1,219 @@
-"""ui.py — shared design system for Zain's profile ("Workbench"): palette, type, SVG shell, helpers."""
-import html
+"""Shared design helpers for the Malik Zain profile README.
 
-BG, SURF, SURF2, LINE = "#0B0C0F", "#111317", "#171A20", "#272B33"
-TX, SOFT, MUT = "#F3F0EA", "#BDB9B0", "#80848E"
-OR, MINT, AMB, SKY, VIO, ROSE = "#FF6B3D", "#4ADE9C", "#F5C451", "#7AB7FF", "#B39DFF", "#FF7A90"
-SERIF = "Georgia,'Iowan Old Style','Palatino Linotype','Times New Roman',serif"
-SANS = "'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',Arial,sans-serif"
-MONO = "ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace"
-
-
-def esc(s):
-    return html.escape(str(s), quote=False)
-
-
-def svg(w, h, body, title, defs="", r=18, frame=True, border=LINE, fill=SURF, grid=False):
-    shell = ""
-    if frame:
-        g = f'<rect width="{w}" height="{h}" fill="url(#grid)" mask="url(#fade)"/>' if grid else ""
-        shell = f'<g clip-path="url(#card)"><rect width="{w}" height="{h}" fill="{fill}"/>{g}{body}</g><rect x=".5" y=".5" width="{w - 1}" height="{h - 1}" rx="{r}" stroke="{border}"/>'
-    else:
-        shell = f"<g>{body}</g>"
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" fill="none" role="img" aria-label="{esc(title)}">
-<title>{esc(title)}</title>
-<defs>
-<linearGradient id="og" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{OR}"/><stop offset="1" stop-color="#FFB24D"/></linearGradient>
-<pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" stroke="#fff" stroke-opacity=".05"/></pattern>
-<radialGradient id="fg" cx=".7" cy=".4" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
-<mask id="fade"><rect width="{w}" height="{h}" fill="url(#fg)"/></mask>
-<filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<clipPath id="card"><rect width="{w}" height="{h}" rx="{r}"/></clipPath>
-{defs}
-</defs>
-{shell}
-</svg>
+Palette, fonts and tiny SVG/SMIL helpers. Fonts (Unbounded + Hanken Grotesk, both SIL OFL) are
+subsetted to the glyphs each SVG really uses and embedded as base64, because GitHub renders README
+images in <img> mode where external fonts never load.
 """
+import base64
+import io
+import os
+import re
+from xml.sax.saxutils import escape
+
+from fontTools import subset
+from fontTools.ttLib import TTFont
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+FONT_DIR = os.path.abspath(os.path.join(HERE, "..", "..", "fonts"))
+
+# palette, straight from the portfolio's :root block
+CB, CB2, TG, TG2 = "#2b3cff", "#aab2ff", "#ff6a2b", "#ffb48f"
+MT, LC, YE, PK = "#8ef0c8", "#cdbbff", "#ffe27a", "#ffb3d1"
+INK, SN, WHITE = "#0c0c16", "#f4f4ef", "#ffffff"
+
+FILES = {"d": "unbounded-latin-800-normal.woff2", "f4": "hanken-grotesk-latin-400-normal.woff2", "f6": "hanken-grotesk-latin-600-normal.woff2"}
+FAM = {"d": ("Unbounded", 800), "f4": ("Hanken Grotesk", 400), "f6": ("Hanken Grotesk", 600)}
+MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace"
+
+_F = {}
 
 
-# ── animation helpers ──
-def A(attr, values, kt=None, dur=6, begin=0, calc=None, extra=""):
-    v = ";".join(str(x) for x in values)
-    k = f' keyTimes="{";".join(f"{t:.4f}" for t in kt)}"' if kt else ""
-    c = f' calcMode="{calc}"' if calc else ""
-    return f'<animate attributeName="{attr}" values="{v}"{k}{c} dur="{dur}s" begin="{begin}s" repeatCount="indefinite" {extra}/>'
+def _font(key):
+    if key not in _F:
+        f = TTFont(os.path.join(FONT_DIR, FILES[key]))
+        _F[key] = (f.getBestCmap(), f["hmtx"], f["head"].unitsPerEm)
+    return _F[key]
 
 
-def AT(kind, values, kt=None, dur=6, begin=0, extra=""):
-    v = ";".join(str(x) for x in values)
-    k = f' keyTimes="{";".join(f"{t:.4f}" for t in kt)}"' if kt else ""
-    return f'<animateTransform attributeName="transform" type="{kind}" values="{v}"{k} dur="{dur}s" begin="{begin}s" repeatCount="indefinite" {extra}/>'
+def adv(key, text):
+    cm, hm, upm = _font(key)
+    sp = cm.get(32)
+    return sum(hm[cm.get(ord(c), sp)][0] for c in text) / upm
 
 
-def window(t0, t1, T, f=0.2):
-    return [0, 0, 1, 1, 0, 0], [0, t0 / T, (t0 + f) / T, (t1 - f) / T, t1 / T, 1]
+def tw(key, text, size, ls=0.0):
+    """Rendered width of a string in px."""
+    return adv(key, text) * size + ls * len(text)
 
 
-def blink(dur=1.2):
-    return A("opacity", [1, 1, 0, 0], [0, 0.5, 0.5, 1], dur=dur)
-
-
-def pulse(cx, cy, color, r=4, dur=2.0, delay=0):
-    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}" opacity=".4"><animate attributeName="r" values="{r};{r * 3};{r}" dur="{dur}s" begin="{delay}s" repeatCount="indefinite"/>'
-            f'<animate attributeName="opacity" values=".5;0;.5" dur="{dur}s" begin="{delay}s" repeatCount="indefinite"/></circle><circle cx="{cx}" cy="{cy}" r="{r}" fill="{color}"/>')
-
-
-def tick(w, y, color=OR, dur=6, delay=0):
-    """thin light travelling along a hairline"""
-    return (f'<line x1="0" y1="{y}" x2="{w}" y2="{y}" stroke="{LINE}"/><rect x="-120" y="{y - 1}" width="120" height="2" fill="{color}">'
-            f'<animate attributeName="x" from="-120" to="{w}" dur="{dur}s" begin="{delay}s" repeatCount="indefinite"/></rect>')
-
-
-# ── text helpers ──
-def serif(x, y, t, size, fill=TX, anchor="start", italic=False, weight=400, extra=""):
-    st = ' font-style="italic"' if italic else ""
-    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{SERIF}" font-size="{size}" font-weight="{weight}"{st} fill="{fill}" {extra}>{esc(t)}</text>'
-
-
-def sans(x, y, t, size=15, fill=SOFT, anchor="start", weight=400, extra=""):
-    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{SANS}" font-size="{size}" font-weight="{weight}" fill="{fill}" {extra}>{esc(t)}</text>'
-
-
-def mono(x, y, t, size=12, fill=MUT, anchor="start", ls=0, extra=""):
-    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="{MONO}" font-size="{size}" letter-spacing="{ls}" fill="{fill}" {extra}>{esc(t)}</text>'
-
-
-def wrap_text(text, width):
-    words, lines, cur = text.split(), [], ""
-    for w in words:
-        if len(cur) + len(w) + (1 if cur else 0) <= width:
-            cur = f"{cur} {w}".strip()
-        else:
-            lines.append(cur)
+def wrap(key, text, size, maxw, ls=0.0):
+    out, cur = [], ""
+    for w in text.split(" "):
+        t = (cur + " " + w).strip()
+        if cur and tw(key, t, size, ls) > maxw:
+            out.append(cur)
             cur = w
+        else:
+            cur = t
     if cur:
-        lines.append(cur)
-    return lines
+        out.append(cur)
+    return out
 
 
-def fit(text, maxw, base, factor=0.56):
-    """largest font size <= base so that text fits maxw (conservative for fallback fonts)"""
-    return min(base, int(maxw / (max(1, len(text)) * factor)))
+def typo(s):
+    """Typographic punctuation for text people read."""
+    s = re.sub(r'(^|[\s(\[])"', lambda m: m.group(1) + "\u201c", s)
+    s = s.replace('"', "\u201d")
+    return s.replace("'", "\u2019")
 
 
-def chip(x, y, t, col, fs=11, h=22, fill=True):
-    w = round(len(t) * fs * 0.64 + 18)
-    f = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{h / 2}" fill="{col if fill else "none"}" fill-opacity="{.12 if fill else 0}" stroke="{col}" stroke-opacity=".55"/>'
-    return f + mono(x + w / 2, y + h / 2 + fs * .35, t, fs, col, "middle"), w
+# ───────────────────────── SMIL helpers ─────────────────────────
+def anim(attr, values, dur, key_times=None, begin="0s", repeat="indefinite", discrete=False, freeze=False, spline=None):
+    v = ";".join(str(x) for x in values)
+    kt = f' keyTimes="{";".join(f"{k:.4f}" for k in key_times)}"' if key_times else ""
+    cm = ' calcMode="discrete"' if discrete else (f' calcMode="spline" keySplines="{";".join([spline] * (len(values) - 1))}"' if spline else "")
+    rp = "" if repeat is None else f' repeatCount="{repeat}"'
+    fz = ' fill="freeze"' if freeze else ""
+    return f'<animate attributeName="{attr}" values="{v}"{kt}{cm} dur="{dur}s" begin="{begin}"{rp}{fz}/>'
 
 
-def save(path, content):
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
+def anim_t(kind, values, dur, key_times=None, begin="0s", repeat="indefinite", freeze=False, spline=None):
+    v = ";".join(values)
+    kt = f' keyTimes="{";".join(f"{k:.4f}" for k in key_times)}"' if key_times else ""
+    cm = f' calcMode="spline" keySplines="{";".join([spline] * (len(values) - 1))}"' if spline else ""
+    rp = "" if repeat is None else f' repeatCount="{repeat}"'
+    fz = ' fill="freeze"' if freeze else ""
+    return f'<animateTransform attributeName="transform" type="{kind}" values="{v}"{kt}{cm} dur="{dur}s" begin="{begin}"{rp}{fz} additive="sum"/>'
+
+
+def window(n_states, i, dur, on=1, off=0):
+    """opacity (or any value) that is `on` during state i of n and `off` otherwise (discrete)."""
+    return anim("opacity", [on if k == i else off for k in range(n_states)], dur, [k / n_states for k in range(n_states)], discrete=True)
+
+
+def track(pts, T):
+    """pts = [(seconds, value), ...] -> (values, keyTimes) for a looping animation of length T."""
+    pts = sorted(pts, key=lambda p: p[0])
+    return [v for _, v in pts], [t / T for t, _ in pts]
+
+
+def smooth(vals, e=0.04):
+    """Hold each of n values for 1/n of the loop, easing to the next during the last fraction e. Returns (values, keyTimes)."""
+    n = len(vals)
+    pts = [(0.0, vals[0])]
+    for i in range(n):
+        pts.append(((i + 1) / n - e, vals[i]))
+        pts.append(((i + 1) / n, vals[(i + 1) % n]))
+    return [v for _, v in pts], [t for t, _ in pts]
+
+
+# ───────────────────────── SVG document ─────────────────────────
+class Doc:
+    def __init__(self, W, H, title, desc="", natural=True):
+        self.W, self.H, self.title, self.desc, self.natural = W, H, title, desc, natural
+        self.body, self.defs = [], []
+        self.chars = {"d": set(" "), "f4": set(" "), "f6": set(" ")}
+        self._id = 0
+
+    def uid(self, p="i"):
+        self._id += 1
+        return f"{p}{self._id}"
+
+    def add(self, s):
+        self.body.append(s)
+
+    def rec(self, f, t):
+        for c in t:
+            self.chars[f].add(c)
+
+    # text: f in d | f4 | f6.  size in px, ls (letter spacing) in px
+    def text(self, x, y, t, f="f4", size=18, fill=INK, anchor="start", op=None, ls=None, extra="", fix=True, raw=None):
+        if fix and raw is None:
+            t = typo(t)
+        plain = re.sub(r"<[^>]+>", "", raw) if raw is not None else t
+        plain = plain.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+        if f != "m":
+            self.rec(f, plain)
+        cls = {"d": "d", "f4": "f", "f6": "f b", "m": "m"}[f]
+        a = "" if anchor == "start" else f' text-anchor="{anchor}"'
+        o = "" if op is None else f' fill-opacity="{op}"'
+        l = f' letter-spacing="{ls:.2f}"' if ls else ""
+        inner = raw if raw is not None else escape(t)
+        return f'<text x="{x:.1f}" y="{y:.1f}" class="{cls}" font-size="{size}" fill="{fill}"{o}{a}{l} {extra}>{inner}</text>'
+
+    def T(self, *a, **k):
+        self.add(self.text(*a, **k))
+
+    def lines(self, x, y, ls_, f, size, fill, lh, anchor="start", op=None, ls=None, extra=""):
+        """Emit several lines; returns y after the block."""
+        for i, l in enumerate(ls_):
+            self.T(x, y + i * lh, l, f, size, fill, anchor, op, ls, extra)
+        return y + len(ls_) * lh
+
+    def _fontcss(self):
+        css = ""
+        for key, chars in self.chars.items():
+            txt = "".join(sorted(chars))
+            f = TTFont(os.path.join(FONT_DIR, FILES[key]))
+            cm = f.getBestCmap()
+            miss = [c for c in txt if ord(c) not in cm]
+            if miss:
+                print(f"  ! {self.title[:30]}: glyphs missing in {key}: {miss}")
+            o = subset.Options()
+            o.flavor = "woff2"
+            o.layout_features = ["kern", "liga", "calt"]
+            o.notdef_outline = False
+            s = subset.Subsetter(o)
+            s.populate(text=txt)
+            s.subset(f)
+            buf = io.BytesIO()
+            f.flavor = "woff2"
+            f.save(buf)
+            fam, wt = FAM[key]
+            css += f"@font-face{{font-family:'{fam}';font-weight:{wt};src:url(data:font/woff2;base64,{base64.b64encode(buf.getvalue()).decode()}) format('woff2')}}"
+        css += ".d{font-family:'Unbounded','Arial Black','Helvetica Neue',Arial,sans-serif;font-weight:800}"
+        css += ".f{font-family:'Hanken Grotesk','Helvetica Neue',Arial,system-ui,sans-serif;font-weight:400}.b{font-weight:600}"
+        css += f".m{{font-family:{MONO}}}"
+        return css
+
+    def render(self):
+        wh = f' width="{self.W}" height="{self.H}"' if self.natural else ""
+        return (
+            f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"{wh} viewBox="0 0 {self.W} {self.H}" role="img" aria-label="{escape(self.title, {chr(34): "&quot;"})}">'
+            f"<title>{escape(self.title)}</title>"
+            + (f"<desc>{escape(self.desc)}</desc>" if self.desc else "")
+            + f"<defs><style>{self._fontcss()}</style>{''.join(self.defs)}</defs>"
+            + "".join(self.body)
+            + "</svg>"
+        )
+
+    def save(self, path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        s = self.render()
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(s)
+        print(f"  {os.path.relpath(path)}  {len(s) / 1024:.1f} KB")
+
+
+def tile(doc, fill, rx=44, stroke=None, W=None, H=None, rx_bottom=None):
+    """Full-bleed rounded tile background."""
+    W = W or doc.W
+    H = H or doc.H
+    st = f' stroke="{stroke}" stroke-width="2"' if stroke else ""
+    doc.add(f'<rect x="{1 if stroke else 0}" y="{1 if stroke else 0}" width="{W - (2 if stroke else 0)}" height="{H - (2 if stroke else 0)}" rx="{rx}" fill="{fill}"{st}/>')
+
+
+def arrow(x, y, color, size=9, w=2.4):
+    """A small → drawn as a path (no glyph needed). x,y = centre of shaft start."""
+    return (f'<path d="M{x} {y}H{x + size * 1.7:.1f}M{x + size * 1.7 - size * .75:.1f} {y - size * .75:.1f}L{x + size * 1.7:.1f} {y}L{x + size * 1.7 - size * .75:.1f} {y + size * .75:.1f}" '
+            f'fill="none" stroke="{color}" stroke-width="{w}" stroke-linecap="round" stroke-linejoin="round"/>')
+
+
+def section_header(d, title, sub, x, y, fg=INK, w=800, tsize=60, sub_w=760):
+    """Section title (Unbounded) + sub paragraph. Returns the y just below the block (last baseline + one line)."""
+    ls = -0.04 * tsize
+    lh = tsize * 1.04
+    lines = wrap("d", title, tsize, w, ls)
+    d.lines(x, y + tsize, lines, "d", tsize, fg, lh, ls=ls)
+    last = y + tsize + (len(lines) - 1) * lh
+    return d.lines(x, last + 46, wrap("f4", typo(sub), 22, sub_w), "f4", 22, fg, 33, op=0.82)
