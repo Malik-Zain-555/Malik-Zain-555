@@ -217,3 +217,57 @@ def section_header(d, title, sub, x, y, fg=INK, w=800, tsize=60, sub_w=760):
     d.lines(x, y + tsize, lines, "d", tsize, fg, lh, ls=ls)
     last = y + tsize + (len(lines) - 1) * lh
     return d.lines(x, last + 46, wrap("f4", typo(sub), 22, sub_w), "f4", 22, fg, 33, op=0.82)
+
+
+# ───────────────────────── more animation helpers ─────────────────────────
+import random as _random
+
+
+def win_anim(wins, T, attr="opacity", on=1, off=0):
+    """Discrete animation: `on` inside any (start, end) window (seconds), `off` elsewhere, looping every T seconds."""
+    wins = [(round(a, 3), round(b, 3)) for a, b in wins]
+    bounds = sorted(set([0.0] + [x for w in wins for x in w if 0 <= x < T]))
+    vals = [on if any(a <= t < b for a, b in wins) else off for t in bounds]
+    return anim(attr, vals, T, [t / T for t in bounds], discrete=True)
+
+
+def countup(d, x, y, target, fmt, size, fill, T, t0=0.3, dur=1.6, frames=10, anchor="start", ls=None, reset=None, f="d"):
+    """Looping count-up: one text per frame, shown in turn (SMIL can't animate text content)."""
+    out = ""
+    for i in range(frames + 1):
+        v = target if i == frames else target * (1 - (1 - i / frames) ** 3)
+        s = t0 + dur * i / frames
+        e = (reset if reset else T) if i == frames else t0 + dur * (i + 1) / frames
+        wins = [(0, t0 + dur / frames)] if i == 0 else [(s, e)]
+        if i == 0 and reset:
+            wins.append((reset, T))
+        out += f'<g opacity="{1 if i == 0 else 0}">{win_anim(wins, T)}{d.text(x, y, fmt(v), f, size, fill, anchor, ls=ls)}</g>'
+    return out
+
+
+def sheen(d, x, y, w, h, rx, T=6.0, delay=0.0, op=0.3):
+    """A soft diagonal light band that sweeps across a rounded rect."""
+    cp = d.uid("sh")
+    d.defs.append(f'<clipPath id="{cp}"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}"/></clipPath>')
+    sk = h * 0.3
+    poly = f'<polygon points="0,{h} 46,{h} {46 + sk:.1f},0 {sk:.1f},0" fill="#fff" fill-opacity="{op}">' \
+           f'<animateTransform attributeName="transform" type="translate" values="{x - 60 - sk:.1f} {y};{x + w + 20:.1f} {y};{x + w + 20:.1f} {y}" keyTimes="0;.4;1" dur="{T}s" begin="{delay}s" repeatCount="indefinite"/></polygon>'
+    return f'<g clip-path="url(#{cp})">{poly}</g>'
+
+
+def sparkles(d, n, x0, y0, x1, y1, seed=1, col="#fff", rmin=1.4, rmax=3.2):
+    r = _random.Random(seed)
+    out = ""
+    for _ in range(n):
+        x, y, rr, dur, beg = r.uniform(x0, x1), r.uniform(y0, y1), r.uniform(rmin, rmax), r.uniform(2.2, 4.6), r.uniform(0, 4)
+        out += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{rr:.1f}" fill="{col}" opacity="0">{anim("opacity", [0, .95, 0], dur, begin=f"{beg:.1f}s")}</circle>'
+    return out
+
+
+def shimmer_fill(d, w, T=7.0, base="#ffffff", glow="#fff3b0"):
+    """A text fill that is `base` with a moving highlight. Returns 'url(#id)'."""
+    i = d.uid("sg")
+    d.defs.append(f'<linearGradient id="{i}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{w * .42:.0f}" y2="0">'
+                  f'<stop offset="0" stop-color="{base}"/><stop offset=".45" stop-color="{base}"/><stop offset=".5" stop-color="{glow}"/><stop offset=".55" stop-color="{base}"/><stop offset="1" stop-color="{base}"/>'
+                  f'<animateTransform attributeName="gradientTransform" type="translate" values="{-w * .5:.0f} 0;{w * 1.1:.0f} 0;{w * 1.1:.0f} 0" keyTimes="0;.55;1" dur="{T}s" repeatCount="indefinite"/></linearGradient>')
+    return f"url(#{i})"

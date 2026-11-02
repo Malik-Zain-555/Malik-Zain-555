@@ -94,13 +94,41 @@ def blobs(d, W, H, rx=44, dur=1.0):
                 f'{anim("cx", path_x, t * dur)}{anim("cy", path_y, t * dur)}</ellipse>')
     g = (el(790, 150, 330, 210, TG, 1, [790, 640, 860, 790], [150, 260, 110, 150], 17)
          + el(330, H - 90, 300, 170, "#1620c4", 1, [330, 470, 250, 330], [H - 90, H - 170, H - 60, H - 90], 21)
-         + el(640, H * .55, 250, 140, "#fbe9ff", .92, [640, 520, 720, 640], [H * .55, H * .42, H * .62, H * .55], 14)
+         + el(640, H * .55, 260, 150, "#7a42ff", .95, [640, 520, 720, 640], [H * .55, H * .42, H * .62, H * .55], 14)
          + el(930, H - 70, 220, 150, TG, .9, [930, 820, 960, 930], [H - 70, H - 130, H - 40, H - 70], 19)
-         + el(70, 90, 230, 160, CB2, .55, [70, 150, 40, 70], [90, 60, 130, 90], 23))
+         + el(70, 90, 230, 160, CB2, .4, [70, 150, 40, 70], [90, 60, 130, 90], 23))
     d.add(f'<g clip-path="url(#{cp})"><rect width="{W}" height="{H}" fill="{CB}"/><g filter="url(#{fl})">{g}</g></g>')
+    return cp
 
 
-def pill_img(name, label, bg=INK, fg=WHITE, stroke="#ffffff38", font="f6", size=17, h=46, pad=22, arrow_=False, shadow=None):
+def floaters(d, specs):
+    """Drifting, spinning decorative shapes: (kind, x, y, size, colour, float_seconds, delay)."""
+    out = ""
+    for kind, x, y, sz, col, dur, dl in specs:
+        if kind == "ring":
+            sh_ = f'<circle r="{sz}" fill="none" stroke="{col}" stroke-width="{max(4, sz / 4):.1f}"/>'
+        elif kind == "plus":
+            sh_ = f'<path d="M{-sz} 0H{sz}M0 {-sz}V{sz}" stroke="{col}" stroke-width="{max(5, sz / 3):.1f}" stroke-linecap="round"/>'
+        elif kind == "dot":
+            sh_ = f'<circle r="{sz}" fill="{col}"/>'
+        elif kind == "sq":
+            sh_ = f'<rect x="{-sz}" y="{-sz}" width="{2 * sz}" height="{2 * sz}" rx="{sz / 4:.1f}" fill="{col}"/>'
+        elif kind == "tri":
+            sh_ = f'<path d="M0 {-sz}L{sz * .95:.1f} {sz * .6:.1f}H{-sz * .95:.1f}Z" fill="{col}" stroke="{col}" stroke-width="4" stroke-linejoin="round"/>'
+        else:  # squiggle
+            sh_ = f'<path d="M{-sz} 0q{sz / 4:.1f} {-sz / 2:.1f} {sz / 2:.1f} 0t{sz / 2:.1f} 0 {sz / 2:.1f} 0 {sz / 2:.1f} 0" fill="none" stroke="{col}" stroke-width="6" stroke-linecap="round" transform="translate({-sz / 2:.1f} 0)"/>'
+        spin = "" if kind in ("dot", "ring") else anim_t("rotate", ["0", "360"], dur * 3, begin=f"{dl}s")
+        out += (f'<g transform="translate({x} {y})"><g>{anim_t("translate", ["0 0", "10 -16", "-8 10", "0 0"], dur, begin=f"{dl}s")}{spin}{sh_}</g></g>')
+    d.add(out)
+
+
+def shadow(d):
+    i = d.uid("ts")
+    d.defs.append(f'<filter id="{i}" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="7" flood-color="{INK}" flood-opacity=".38"/></filter>')
+    return i
+
+
+def pill_img(name, label, bg=INK, fg=WHITE, stroke="#ffffff38", font="f6", size=17, h=46, pad=22, arrow_=False, shadow=None, shine=False):
     pw = tw(font, label, size) + 2 * pad + (30 if arrow_ else 0)
     W = int(math.ceil(pw)) + (6 if shadow else 0)
     H = h + (6 if shadow else 0)
@@ -111,50 +139,80 @@ def pill_img(name, label, bg=INK, fg=WHITE, stroke="#ffffff38", font="f6", size=
     d.T(pad + 1, h / 2 + size * .35, label, font, size, fg, ls=(-0.5 if font == "d" else None))
     if arrow_:
         d.add(arrow(pad + tw(font, label, size) + 12, h / 2, fg, 7.5, 2.4))
+    if shine:
+        d.add(sheen(d, 3, 3, pw - 6, h - 6, (h - 6) / 2, T=3.4, delay=.5, op=.55))
     S(d, name)
     return W, H
 
 
 # ═════════════════════════════ HERO ═════════════════════════════
+TICKER = ["Python", "scikit-learn", "NumPy", "Matplotlib", "Streamlit", "pandas", "NLP", "FastAPI", "Docker", "HTML", "CSS", "JavaScript", "React", "Tailwind", "Git", "GitHub"]
+
+
 def hero():
     W, size = 1000, 86
     ls = -0.04 * size
     h1 = wrap("d", HERO_H1, size, 880, ls)
     pl = wrap("f4", HERO_P, 26, 600)
     top = 96
-    H = int(top + len(h1) * 90 + 30 + len(pl) * 37 + 26 + 40 + 62)
+    chips_y = top + len(h1) * 90 + 30 + len(pl) * 37 + 26
+    H = int(chips_y + 38 + 44 + 56)
     d = Doc(W, H, f"{HERO_H1} Malik Zain, BS CS student at Riphah and AI/ML intern at FlyRank in Islamabad.")
-    blobs(d, W, H)
-    y = top + size * .9
+    cp = blobs(d, W, H)
+    floaters(d, [("ring", 905, 120, 30, "#fff", 7, 0), ("plus", 800, 62, 17, YE, 6, .5), ("dot", 946, 300, 14, MT, 8, 1), ("sq", 868, 214, 17, LC, 9, .3), ("tri", 780, 330, 20, PK, 7.5, 1.2),
+                 ("squiggle", 900, 430, 56, "#fff", 8.5, .8), ("ring", 70, H - 130, 14, YE, 9, .2), ("dot", 600, 52, 8, "#fff", 6.5, 2)])
+    d.add(sparkles(d, 26, 30, 30, 970, H - 90, 11))
+    sh = shadow(d)
+    shim = shimmer_fill(d, W, T=8)
     g = ""
     for i, l in enumerate(h1):
         g += (f'<g opacity="0">{anim("opacity", [0, 1], .6, begin=f"{.15 + i * .14}s", repeat=None, freeze=True)}'
               f'<g>{anim_t("translate", ["0 46", "0 0"], .9, begin=f"{.15 + i * .14}s", repeat=None, freeze=True, spline="0.2 0.9 0.2 1")}'
-              + d.text(56, y + i * 90, l, "d", size, WHITE, ls=ls) + "</g></g>")
-    d.add(f'<g style="mix-blend-mode:difference">{g}</g>')
+              + d.text(56, top + size * .9 + i * 90, l, "d", size, shim, ls=ls) + "</g></g>")
+    d.add(f'<g filter="url(#{sh})">{g}</g>')
     y = top + len(h1) * 90 + 30
-    d.lines(56, y + 20, pl, "f4", 26, WHITE, 37, op=.96)
-    y += len(pl) * 37 + 26
-    x = 56
+    d.add(f'<g filter="url(#{sh})" opacity="0">{anim("opacity", [0, 1], .8, begin=".9s", repeat=None, freeze=True)}')
+    d.lines(56, y + 20, pl, "f4", 26, WHITE, 37)
+    d.add("</g>")
+    x = chips_y
+    cx = 56
     for i, c in enumerate(HERO_CHIPS):
-        w = tw("f6", c, 17) + 34
-        d.add(f'<g>{anim_t("translate", ["0 0", "0 -5", "0 0"], 4 + i * .6, begin=f"{i * .7}s")}<rect x="{x}" y="{y}" width="{w:.1f}" height="38" rx="19" fill="#fff"/>'
-              + d.text(x + 17, y + 25, c, "f6", 17, INK) + "</g>")
-        x += w + 10
+        w = tw("f6", c, 17) + 34 + 20
+        col = [MT, TG, CB][i]
+        d.add(f'<g>{anim_t("translate", ["0 0", "0 -5", "0 0"], 4 + i * .6, begin=f"{i * .7}s")}<rect x="{cx}" y="{x}" width="{w:.1f}" height="38" rx="19" fill="#fff"/>'
+              f'<circle cx="{cx + 20}" cy="{x + 19}" r="9" fill="{col}" fill-opacity=".35">{anim("r", [4, 11, 11], 2.2, [0, .8, 1], begin=f"{i * .5}s")}{anim("fill-opacity", [.6, 0, 0], 2.2, [0, .8, 1], begin=f"{i * .5}s")}</circle><circle cx="{cx + 20}" cy="{x + 19}" r="4.5" fill="{col}"/>'
+              + d.text(cx + 34, x + 25, c, "f6", 17, INK) + "</g>")
+        cx += w + 10
+    # skills ticker along the bottom
+    bandy = H - 52
+    bc = d.uid("c")
+    d.defs.append(f'<clipPath id="{bc}"><rect x="0" y="{bandy}" width="{W}" height="52"/></clipPath>')
+    items, xx, run = [], 0, ""
+    for k, t in enumerate(TICKER):
+        run += d.text(xx, bandy + 32, t.upper(), "f6", 15.5, WHITE, ls=1.6, op=None)
+        xx += tw("f6", t.upper(), 15.5, 1.6) + 22
+        run += f'<circle cx="{xx - 11:.1f}" cy="{bandy + 26.5}" r="3.2" fill="{[MT, YE, TG, LC][k % 4]}"/>'
+        xx += 22
+    seg = xx
+    d.add(f'<g clip-path="url(#{cp})"><rect x="0" y="{bandy}" width="{W}" height="52" fill="{INK}" fill-opacity=".32"/><g clip-path="url(#{bc})">'
+          f'<g>{anim_t("translate", ["0 0", f"{-seg:.0f} 0"], seg / 42)}<g>{run}</g><g transform="translate({seg:.0f} 0)">{run}</g><g transform="translate({2 * seg:.0f} 0)">{run}</g></g></g></g>')
     S(d, "hero.svg")
 
 
 # ═════════════════════════════ NUMBERS ═════════════════════════════
 def numbers():
-    W, H = 1000, 232
+    W, H, T = 1000, 232, 9.0
     d = Doc(W, H, "Results: " + "; ".join(f"{a}: {b}" for a, b in RESULTS))
     tile(d, INK, stroke="#ffffff22")
     colw = 222
-    size = min(60, min(196 / adv("d", a) / 1.0 for a, _ in RESULTS) * 0.98)
+    spec = [(74.4, lambda v: f"{v:.1f}%"), (98, lambda v: f"~{v:.0f}%"), (0.86, lambda v: f"{v:.2f}"), (6, lambda v: f"{v:.0f}")]
+    size = min(60, min(196 / adv("d", a) for a, _ in RESULTS) * 0.98)
+    d.add(sparkles(d, 14, 40, 30, 960, 200, 4, YE, 1.4, 3))
     for i, (a, b) in enumerate(RESULTS):
         x = 56 + i * colw
-        d.T(x, 108, a, "d", size, YE, ls=-0.05 * size)
+        d.add(countup(d, x, 108, spec[i][0], spec[i][1], size, YE, T, t0=.3 + i * .2, dur=1.6, frames=12, reset=8.2, ls=-0.05 * size))
         d.lines(x, 142, wrap("f4", typo(b), 17, 192), "f4", 17, WHITE, 24, op=.78)
+        d.add(f'<rect x="{x}" y="{208}" width="0" height="4" rx="2" fill="{YE}" fill-opacity=".8">{anim("width", [0, 0, 150, 150, 0, 0], T, [0, (.3 + i * .2) / T, (1.9 + i * .2) / T, 8.2 / T, 8.8 / T, 1])}</rect>')
     S(d, "numbers.svg")
 
 
@@ -240,6 +298,7 @@ def project_cards():
         ix = 30
         d.add(f'<rect x="{ix}" y="30" width="{CARD_IW}" height="206" rx="20" fill="{p["c"]}"/>')
         d.add(art(d, p["art"], ix, 30, CARD_IW, 206))
+        d.add(sheen(d, ix, 30, CARD_IW, 206, 20, T=6, delay=PROJECTS.index(p) * .8, op=.3))
         y = 236 + 18 + 40
         d.T(ix, y, p["m"], "d", 42, INK, ls=-2.1)
         d.T(ix + tw("d", p["m"], 42, -2.1) + 10, y, p["u"], "f4", 15, INK, op=.6)
@@ -332,6 +391,7 @@ def sahi():
     fvals, fk = smooth([s["tx"] - P for s in states], .04)
     d.add(f'<rect x="{P}" y="{sy + 14}" width="0" height="8" rx="4" fill="{INK}">{anim("width", fvals, T, fk)}</rect>')
     d.add(f'<circle cx="{states[0]["tx"]:.1f}" cy="{sy + 18}" r="13" fill="{INK}" stroke="#fff" stroke-width="3">{anim("cx", tvals, T, tk)}</circle>')
+    d.add(f'<circle cx="{states[0]["tx"]:.1f}" cy="{sy + 18}" r="13" fill="none" stroke="{INK}" stroke-width="2.5">{anim("cx", tvals, T, tk)}{anim("r", [13, 28, 28], 1.5, [0, .9, 1])}{anim("stroke-opacity", [.6, 0, 0], 1.5, [0, .9, 1])}</circle>')
     yy = sy + 40 + 26
     d.T(P, yy, "Fair price (example)", "f6", 18, INK)
     swap(P + cw, yy, "fair", "d", 22, INK, "end", ls=-.9)
@@ -380,6 +440,7 @@ def lab():
     d = Doc(W, H, "Concept lab: Div Space (stick a chip on the floor and a temporary room appears), Inventory OS, NOVA DOCK, and a bill splitter plus budget tracker. Concepts I design, built with AI.")
     tile(d, LC)
     header(d, "lab", P, P)
+    d.add(sparkles(d, 16, 40, 30, 960, 160, 6, "#fff", 1.6, 3.6))
     sw = W - 2 * P
     d.add(f'<rect x="{P + 1}" y="{sy + 1}" width="{sw - 2}" height="{sh - 2}" rx="30" fill="#fff" stroke="{INK}" stroke-width="2.5"/>')
     fy = sy + sh - 54
@@ -468,16 +529,21 @@ def route():
     d = Doc(W, H, "Roadmap: " + "; ".join(f"{r[0]} ({r[2]})" for r in rows) + ". Currently on NLP.")
     tile(d, INK, stroke="#ffffff22")
     header(d, "route", P, P, fg="#fff")
-    # timeline
-    d.add(f'<rect x="{x0 + 12}" y="{y0 + 8}" width="4" height="{H - P - y0 - 8}" rx="2" fill="#fff" fill-opacity=".17"/>')
+    # timeline: runs from the first dot to the last dot only, and sits under the dots
+    tops, c_ = [], y0
+    for r in rows:
+        tops.append(c_)
+        c_ += r[3] + 14
+    first_y, last_y = tops[0] + 32, tops[-1] + 32
+    now_y = next(t + 32 for t, r in zip(tops, rows) if r[1] == "n")
+    d.add(f'<rect x="{x0 + 12}" y="{first_y}" width="4" height="{last_y - first_y}" fill="#fff" fill-opacity=".17"/>')
+    d.add(f'<rect x="{x0 + 12}" y="{first_y}" width="4" height="0" fill="{TG}">{anim("height", [0, now_y - first_y], 2.2, repeat=None, freeze=True, spline="0.3 0 0.2 1")}</rect>')
+    d.add(f'<circle r="6" fill="#ffd9c7"><animateMotion dur="3.2s" repeatCount="indefinite" path="M{x0 + 14} {first_y}V{now_y}" keyPoints="0;1;1" keyTimes="0;.8;1" calcMode="linear"/>{anim("opacity", [0, 1, 1, 0, 0], 3.2, [0, .1, .75, .82, 1])}</circle>')
     cur = y0
-    now_y = None
     for t, s, when, h, cols, wr in rows:
         dot = MT if s == "d" else TG if s == "n" else INK
         dstroke = MT if s == "d" else TG if s == "n" else "#ffffff55"
         cyd = cur + 32
-        if s == "n":
-            now_y = cyd
         d.add(f'<rect x="{bx + .75}" y="{cur + .75}" width="{bw - 1.5}" height="{h - 1.5}" rx="20" fill="#fff" fill-opacity=".07" stroke="#fff" stroke-opacity=".17" stroke-width="1.5"/>')
         d.add(f'<circle cx="{x0 + 14}" cy="{cyd}" r="10" fill="{dot}" stroke="{dstroke}" stroke-width="4"/>')
         if s == "n":
@@ -490,8 +556,6 @@ def route():
                 d.T(cx, cur + 64 + 24, lab_, "f6", 17, TG)
                 d.lines(cx, cur + 64 + 24 + 28, lines_, "f4", 17, "#fff", 24, op=.85)
         cur += h + 14
-    # progress fill grows to the stop I'm on
-    d.add(f'<rect x="{x0 + 12}" y="{y0 + 8}" width="4" height="0" rx="2" fill="{TG}">{anim("height", [0, now_y - y0 - 8], 2.2, repeat=None, freeze=True, spline="0.3 0 0.2 1")}</rect>')
     S(d, "route.svg")
 
 
@@ -516,7 +580,8 @@ def skills():
             cx = x + pw - 22 - (2 - k) * 19 - 7
             col = LEVEL_COL[l]
             fill = col if k < l else "none"
-            d.add(f'<circle cx="{cx:.1f}" cy="{yy + ph / 2}" r="6" fill="{fill}" stroke="{col if k < l else "#ffffff66"}" stroke-width="2"/>')
+            wave = f'<animate attributeName="r" values="6;9;6;6" keyTimes="0;.1;.2;1" dur="4s" begin="{(i * .3 + k * .2) % 4:.2f}s" repeatCount="indefinite"/>' if k < l else ""
+            d.add(f'<circle cx="{cx:.1f}" cy="{yy + ph / 2}" r="6" fill="{fill}" stroke="{col if k < l else "#ffffff66"}" stroke-width="2">{wave}</circle>')
     ly = y0 + rows * (ph + gap) + 14
     x = P
     for lab_, col in [("learning", TG), ("working", YE), ("comfortable", MT)]:
@@ -528,21 +593,37 @@ def skills():
 
 # ═════════════════════════════ SAY HI ═════════════════════════════
 def sayhi():
-    W, H = 1000, 380
+    W, H = 1000, 420
     d = Doc(W, H, "Say hi. Never stop because life is not end yet.")
-    blobs(d, W, H, dur=1.3)
-    size = 150
-    d.add(f'<g style="mix-blend-mode:difference">' + d.text(W / 2, 196, "Say hi.", "d", size, WHITE, "middle", ls=-.07 * size) + "</g>")
-    d.T(W / 2, 262, "Never stop because life is not end yet.", "f4", 26, WHITE, "middle")
+    cp = blobs(d, W, H, dur=1.3)
+    cx, cy = W / 2, 188
+    d.add(f'<g clip-path="url(#{cp})">')
+    for r_, dur, dash, sw_ in [(330, 40, "4 14", 3), (250, 28, "2 10", 2.5)]:
+        d.add(f'<g transform="translate({cx} {cy})"><g>{anim_t("rotate", ["0", "360"], dur)}<circle r="{r_}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="{sw_}" stroke-dasharray="{dash}"/>'
+              f'<circle cx="{r_}" r="10" fill="{YE}"/><circle cx="{-r_}" r="7" fill="{MT}"/></g></g>')
+    d.add("</g>")
+    floaters(d, [("ring", 110, 110, 26, "#fff", 7, 0), ("plus", 880, 90, 18, YE, 6, .4), ("dot", 160, 330, 13, MT, 8, .6), ("sq", 850, 330, 16, PK, 9, 1), ("tri", 70, 230, 18, LC, 7, .2), ("squiggle", 760, 380, 50, "#fff", 8, .9)])
+    d.add(sparkles(d, 26, 30, 30, 970, H - 40, 21))
+    sh = shadow(d)
+    size, ls = 150, -.07 * 150
+    text = "Say hi."
+    total = sum(tw("d", ch, size, ls) for ch in text)
+    shim = shimmer_fill(d, W, T=6)
+    x = cx - total / 2
+    letters = ""
+    for i, ch in enumerate(text):
+        letters += f'<g>{anim_t("translate", ["0 0", "0 -30", "0 0", "0 0"], 3.4, [0, .14, .28, 1], begin=f"{i * .12:.2f}s", spline="0.3 0 0.4 1;0.6 0 0.7 1;0 0 1 1")}' + d.text(x, cy + 20, ch, "d", size, shim, ls=ls) + "</g>"
+        x += tw("d", ch, size, ls)
+    d.add(f'<g filter="url(#{sh})">{letters}' + d.text(cx, cy + 86, "Never stop because life is not end yet.", "f4", 26, WHITE, "middle") + "</g>")
     S(d, "sayhi.svg")
 
 
 def buttons():
     pill_img("nav-top.svg", "MZ", font="d", size=14, pad=18)
-    for k, lab_ in [("builds", "Builds"), ("sahi", "Sahi Daam"), ("lab", "Lab"), ("route", "Route"), ("skills", "Skills"), ("live", "Live")]:
+    for k, lab_ in [("builds", "Builds"), ("sahi", "Sahi Daam"), ("lab", "Lab"), ("route", "Route"), ("skills", "Skills"), ("live", "Live"), ("year", "Year")]:
         pill_img(f"nav-{k}.svg", lab_)
     for lab_, _ in LINKS:
-        pill_img(f"btn-{lab_.lower().replace('.', '')}.svg", lab_, bg="#fff", fg=INK, stroke=INK, size=19, h=50, pad=26, shadow=CB)
+        pill_img(f"btn-{lab_.lower().replace('.', '')}.svg", lab_, bg="#fff", fg=INK, stroke=INK, size=19, h=50, pad=26, shadow=CB, shine=True)
     pill_img("btn-sahi-repo.svg", "Sahi Daam repo", bg=INK, fg="#fff", size=17, h=46, pad=24, arrow_=True)
 
 
@@ -555,7 +636,7 @@ def readme(card_h):
     repo = lambda p: f"{GH}/{p['repo']}"
     cards = "\n".join(f'<a href="{repo(p)}"><img src="assets/{card_file(p)}" width="49.5%" alt="{p["name"]}: {p["m"]} {p["u"]}. {p["blurb"]}" /></a>' for p in PROJECTS)
     nav = " ".join(f'<a href="{h}"><img src="assets/nav-{k}.svg" alt="{a}" /></a>' for h, k, a in
-                   [("#top", "top", "MZ"), ("#builds", "builds", "Builds"), ("#sahi", "sahi", "Sahi Daam"), ("#lab", "lab", "Lab"), ("#route", "route", "Route"), ("#skills", "skills", "Skills"), ("#live", "live", "Live")])
+                   [("#top", "top", "MZ"), ("#builds", "builds", "Builds"), ("#sahi", "sahi", "Sahi Daam"), ("#lab", "lab", "Lab"), ("#route", "route", "Route"), ("#skills", "skills", "Skills"), ("#live", "live", "Live"), ("#year", "year", "Year")])
     links = " ".join(f'<a href="{u}"><img src="assets/btn-{n.lower().replace(".", "")}.svg" alt="{n}" /></a>' for n, u in LINKS)
     stops = "\n".join(f"<tr><td><b>{t}</b></td><td>{w}</td><td>{a}</td><td>{b}</td><td>{c}</td></tr>" for t, s, w, a, b, c in ROUTE)
     plain_projects = "\n".join(f"- [{p['name']}]({repo(p)}) · {p['m']} {p['u']}. {p['blurb']}" for p in PROJECTS)
@@ -606,10 +687,12 @@ def readme(card_h):
 <p align="center"><img src="assets/skills.svg" width="100%" alt="Skills, honestly. Only things I can do myself." /></p>
 
 <a id="live"></a>
-<p align="center">
-<img src="assets/live.svg" width="100%" alt="Live from GitHub: public repos, followers, stars earned, top languages and recently pushed repos." /><br />
-<img src="https://ghchart.rshah.org/2b3cff/Malik-Zain-555" width="100%" alt="GitHub contribution graph" />
-</p>
+<p align="center"><img src="assets/live.svg" width="100%" alt="Live from GitHub: public repos, followers, stars, streaks, contributions, best day, most used languages and recently pushed repos." /></p>
+
+<a id="year"></a>
+<p align="center"><img src="assets/year.svg" width="100%" alt="My year, week by week: an animated heatmap of the last 12 months with a running total and contributions per month." /></p>
+
+<p align="center"><img src="assets/compare.svg" width="100%" alt="Comparisons: last 30 and 90 days vs before, this year vs last year, weekdays vs weekends, my week day by day, year by year, and milestones." /></p>
 
 <p align="center"><img src="assets/sayhi.svg" width="100%" alt="Say hi. Never stop because life is not end yet." /></p>
 
@@ -656,7 +739,7 @@ if __name__ == "__main__":
     skills()
     sayhi()
     buttons()
-    live.render_live(live.seed_data(), os.path.join(OUT, "live.svg"))
+    live.render_all(live.seed_data())  # real numbers; the Action keeps these three tiles fresh
     with open(os.path.join(HERE, "README.md"), "w", encoding="utf-8") as fh:
         fh.write(readme(ch))
     print("README.md written")

@@ -8,7 +8,7 @@
 
 <p align="center"><img src="assets/hero.svg" width="100%" alt="I learn by building, not by theory. Malik Zain, BS CS student at Riphah and AI/ML intern at FlyRank, in Islamabad. Now: NLP. Building: Sahi Daam. Later, inshallah: deep learning, RAG." /></p>
 
-<p align="center"><a href="#top"><img src="assets/nav-top.svg" alt="MZ" /></a> <a href="#builds"><img src="assets/nav-builds.svg" alt="Builds" /></a> <a href="#sahi"><img src="assets/nav-sahi.svg" alt="Sahi Daam" /></a> <a href="#lab"><img src="assets/nav-lab.svg" alt="Lab" /></a> <a href="#route"><img src="assets/nav-route.svg" alt="Route" /></a> <a href="#skills"><img src="assets/nav-skills.svg" alt="Skills" /></a> <a href="#live"><img src="assets/nav-live.svg" alt="Live" /></a></p>
+<p align="center"><a href="#top"><img src="assets/nav-top.svg" alt="MZ" /></a> <a href="#builds"><img src="assets/nav-builds.svg" alt="Builds" /></a> <a href="#sahi"><img src="assets/nav-sahi.svg" alt="Sahi Daam" /></a> <a href="#lab"><img src="assets/nav-lab.svg" alt="Lab" /></a> <a href="#route"><img src="assets/nav-route.svg" alt="Route" /></a> <a href="#skills"><img src="assets/nav-skills.svg" alt="Skills" /></a> <a href="#live"><img src="assets/nav-live.svg" alt="Live" /></a> <a href="#year"><img src="assets/nav-year.svg" alt="Year" /></a></p>
 
 <p align="center"><img src="assets/numbers.svg" width="100%" alt="74.4% resume classifier, about 98% fake-news classifier (which overstates it), 0.86 churn ROC-AUC with 83% recall, 6 repos pinned each with its caveat." /></p>
 
@@ -56,10 +56,12 @@
 <p align="center"><img src="assets/skills.svg" width="100%" alt="Skills, honestly. Only things I can do myself." /></p>
 
 <a id="live"></a>
-<p align="center">
-<img src="assets/live.svg" width="100%" alt="Live from GitHub: public repos, followers, stars earned, top languages and recently pushed repos." /><br />
-<img src="https://ghchart.rshah.org/2b3cff/Malik-Zain-555" width="100%" alt="GitHub contribution graph" />
-</p>
+<p align="center"><img src="assets/live.svg" width="100%" alt="Live from GitHub: public repos, followers, stars, streaks, contributions, best day, most used languages and recently pushed repos." /></p>
+
+<a id="year"></a>
+<p align="center"><img src="assets/year.svg" width="100%" alt="My year, week by week: an animated heatmap of the last 12 months with a running total and contributions per month." /></p>
+
+<p align="center"><img src="assets/compare.svg" width="100%" alt="Comparisons: last 30 and 90 days vs before, this year vs last year, weekdays vs weekends, my week day by day, year by year, and milestones." /></p>
 
 <p align="center"><img src="assets/sayhi.svg" width="100%" alt="Say hi. Never stop because life is not end yet." /></p>
 
