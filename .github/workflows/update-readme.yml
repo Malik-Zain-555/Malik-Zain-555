@@ -1,0 +1,40 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: "23 */6 * * *"      # every 6 hours
+  push:
+    branches: [main]
+    paths: [projects.json, .github/scripts/update_readme.py, .github/workflows/update-readme.yml]
+  workflow_dispatch:             # "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-readme
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild README from projects.json + live GitHub data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/update_readme.py
+      - name: Commit if changed
+        run: |
+          git config user.name "readme-bot"
+          git config user.email "readme-bot@users.noreply.github.com"
+          git add README.md
+          if git diff --cached --quiet; then echo "no changes"; else
+            git commit -m "readme: auto-update $(date -u +%F)"
+            git pull --rebase
+            git push
+          fi

@@ -1,0 +1,333 @@
+{
+  "_help": "THE ONE FILE YOU EDIT. It drives both the GitHub profile README and the interactive site. Edit on GitHub (pencil icon), commit, and both update. Keep the quotes and commas. 'status' for route is done, now or later. 'level' for skills is 1 learning, 2 working, 3 comfortable. 'art' is one of bars, ring, roc, scatter, cap, nodes.",
+  "user": "Malik-Zain-555",
+  "name": "Malik Zain",
+  "site": "https://malik-zain-555.github.io/Malik-Zain-555/",
+  "hero": "Malik Zain. BS CS student at Riphah and AI/ML intern at FlyRank, in Islamabad. I build small machine-learning projects, then measure where they break.",
+  "chips": [
+    "Now: NLP",
+    "Building: Sahi Daam",
+    "Later, inshallah: deep learning, RAG"
+  ],
+  "intro": "BS CS student at Riphah and AI/ML intern at FlyRank, in Islamabad. I build small machine-learning projects, then measure where they break. **I learn by building, not by theory.** No offense to theory, it just isn't how I learn.",
+  "now": "NLP, and building Sahi Daam",
+  "next": "a grammar and punctuation error explainer",
+  "later": "deep learning (ANN, CNN, RNN) and RAG apps, inshallah, on the way to AI Engineer",
+  "quote": "Never stop because life is not end yet.",
+  "results": [
+    {
+      "value": 74.4,
+      "decimals": 1,
+      "suffix": "%",
+      "prefix": "",
+      "text": "Resume classifier with embeddings, up from 71.8% with TF-IDF"
+    },
+    {
+      "value": 98,
+      "decimals": 0,
+      "suffix": "%",
+      "prefix": "~",
+      "text": "Fake-news classifier. The investigation says why that overstates it"
+    },
+    {
+      "value": 0.86,
+      "decimals": 2,
+      "suffix": "",
+      "prefix": "",
+      "text": "Churn ROC-AUC, with 83% recall on churners"
+    },
+    {
+      "value": 6,
+      "decimals": 0,
+      "suffix": "",
+      "prefix": "",
+      "text": "Repos pinned, each with its caveat written down"
+    }
+  ],
+  "projects": [
+    {
+      "repo": "sahi-daam-fair-price-detector",
+      "name": "Sahi Daam Fair-Price Detector",
+      "metric": "New",
+      "unit": "in progress",
+      "art": "scatter",
+      "color": "--tg2",
+      "blurb": "Estimates fair prices for Pakistani property listings and flags ones priced far above similar listings.",
+      "tags": [
+        "Python",
+        "scikit-learn",
+        "XGBoost",
+        "Streamlit"
+      ],
+      "notes": [
+        [
+          "Data",
+          "Scraped from zameen.com with requests + BeautifulSoup, starting with DHA Islamabad rentals."
+        ],
+        [
+          "Status",
+          "No headline metric yet. I will publish one when I can defend it."
+        ]
+      ],
+      "result": "in progress",
+      "caveat": "Fair prices for Pakistani property listings, from zameen.com. No headline metric until I can defend one."
+    },
+    {
+      "repo": "resume-category-classifier",
+      "name": "Resume Category Classifier",
+      "metric": "74.4%",
+      "unit": "test accuracy",
+      "art": "bars",
+      "color": "--cb2",
+      "blurb": "Sorts resumes into 24 job categories and answers UNSURE when confidence is low.",
+      "tags": [
+        "scikit-learn",
+        "embeddings",
+        "FastAPI",
+        "Docker"
+      ],
+      "notes": [
+        [
+          "Result",
+          "74.4% with sentence embeddings, up from 71.8% with TF-IDF."
+        ],
+        [
+          "Caveat",
+          "Reading the model weights showed which words it leans on, so I trust it where it says UNSURE, not blindly."
+        ]
+      ],
+      "result": "**74.4%** test accuracy (71.8% with TF-IDF)",
+      "caveat": "Says UNSURE when it isn't confident. Shipped with FastAPI + Docker."
+    },
+    {
+      "repo": "fake_news_style_detector",
+      "name": "Fake News Style Detector",
+      "metric": "~98%",
+      "unit": "accuracy",
+      "art": "ring",
+      "color": "--pk",
+      "blurb": "TF-IDF + Logistic Regression for fake vs real news, plus an investigation of what it learned.",
+      "tags": [
+        "scikit-learn",
+        "TF-IDF"
+      ],
+      "notes": [
+        [
+          "Result",
+          "About 98% accuracy."
+        ],
+        [
+          "Caveat",
+          "It learns the source's writing style, not truth. A \"Reuters\" shortcut sits in the top weights, so 98% overstates what it knows."
+        ]
+      ],
+      "result": "**~98%** accuracy",
+      "caveat": "It learned the source's style, not truth: a \"Reuters\" shortcut sits in the top weights."
+    },
+    {
+      "repo": "churn-prediction-pipeline",
+      "name": "Churn Prediction Pipeline",
+      "metric": "0.86",
+      "unit": "ROC-AUC",
+      "art": "roc",
+      "color": "--mt",
+      "blurb": "Predicts which customers will churn, from raw data to a live app.",
+      "tags": [
+        "Pipeline",
+        "LogReg",
+        "Streamlit"
+      ],
+      "notes": [
+        [
+          "Result",
+          "0.86 ROC-AUC with 83% recall on churners."
+        ],
+        [
+          "Built with",
+          "ColumnTransformer + Pipeline, deployed as an interactive Streamlit app."
+        ]
+      ],
+      "result": "**0.86** ROC-AUC, 83% recall",
+      "caveat": "ColumnTransformer + Pipeline, deployed as a Streamlit app."
+    },
+    {
+      "repo": "MUDABBIR-FYP",
+      "name": "MUDABBIR-FYP",
+      "metric": "FYP",
+      "unit": "university",
+      "art": "cap",
+      "color": "--ye",
+      "blurb": "The repository for my university final year project.",
+      "tags": [
+        "BS CS",
+        "Riphah"
+      ],
+      "notes": [
+        [
+          "Status",
+          "Work in progress. I will add a description here when it is ready to show."
+        ]
+      ],
+      "result": "university final year project",
+      "caveat": "Work in progress."
+    },
+    {
+      "repo": "Zylo",
+      "name": "Zylo",
+      "metric": "Web",
+      "unit": "full-stack",
+      "art": "nodes",
+      "color": "--lc",
+      "blurb": "A social platform: auth, posts, likes, comments, follows, notifications, media uploads.",
+      "tags": [
+        "Node.js",
+        "Express",
+        "EJS",
+        "MySQL"
+      ],
+      "notes": [
+        [
+          "How it was made",
+          "Tutorial-guided. This is where I learned full-stack basics."
+        ]
+      ],
+      "result": "full-stack social platform",
+      "caveat": "Tutorial-guided: where I learned full-stack basics."
+    }
+  ],
+  "concepts": [
+    {
+      "name": "Inventory OS",
+      "blurb": "Offline-first POS and inventory concept for small shops.",
+      "stack": "NestJS · Electron · Expo React Native · Railway + Neon PostgreSQL"
+    },
+    {
+      "name": "NOVA DOCK",
+      "blurb": "A Windows dock in the style of the iPhone Dynamic Island. v2.0 rebuild planned.",
+      "stack": "Python · PySide6"
+    },
+    {
+      "name": "Bill splitter + budget tracker",
+      "blurb": "Two ideas on my list: who-owes-whom settlements, and a monthly budget tracker.",
+      "stack": "not started"
+    }
+  ],
+  "route": [
+    {
+      "title": "HTML, CSS, JS",
+      "status": "done",
+      "when": "Aug 2023",
+      "solid": "Solid on HTML, CSS and Tailwind basics. I love JavaScript.",
+      "shaky": "Advanced JavaScript is rusty.",
+      "checkpoint": "Revisit it when a build needs it."
+    },
+    {
+      "title": "React",
+      "status": "done",
+      "when": "2024 to mid 2025",
+      "solid": "I can build React sites, with a lot of frontend and animation work.",
+      "shaky": "The concepts underneath are not deep yet.",
+      "checkpoint": "Go deeper, until my ML apps need a real front end."
+    },
+    {
+      "title": "Python",
+      "status": "done",
+      "when": "Feb 2026",
+      "solid": "Python, NumPy, Matplotlib. pandas is partial.",
+      "shaky": "Heavy data wrangling.",
+      "checkpoint": "Own CLI tools and scripts."
+    },
+    {
+      "title": "Machine learning",
+      "status": "done",
+      "when": "Jun 2026",
+      "solid": "scikit-learn, Pipelines, Logistic Regression, tree models. Interning at FlyRank.",
+      "shaky": "Training big models from scratch.",
+      "checkpoint": "Six repos with honest numbers."
+    },
+    {
+      "title": "NLP",
+      "status": "now",
+      "when": "Now",
+      "solid": "TF-IDF vs embeddings, evaluation beyond accuracy, reading model weights.",
+      "shaky": "Training transformers: no GPU, so Colab if ever.",
+      "checkpoint": "A grammar and punctuation error explainer."
+    },
+    {
+      "title": "Deep learning",
+      "status": "later",
+      "when": "Later, inshallah",
+      "solid": "ANN basics, CNNs for images, RNNs for sequences.",
+      "shaky": "Custom GPU code.",
+      "checkpoint": "A small CNN and RNN explained in my own words."
+    },
+    {
+      "title": "RAG apps",
+      "status": "later",
+      "when": "Later, inshallah",
+      "solid": "Embeddings, chunking, vector search, evaluating answers.",
+      "shaky": "Training LLMs.",
+      "checkpoint": "A small RAG app over documents I choose, with a written evaluation."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Python",
+      "level": 2
+    },
+    {
+      "name": "scikit-learn + Pipelines",
+      "level": 2
+    },
+    {
+      "name": "NumPy, Matplotlib",
+      "level": 2
+    },
+    {
+      "name": "Streamlit",
+      "level": 2
+    },
+    {
+      "name": "pandas",
+      "level": 1
+    },
+    {
+      "name": "NLP: TF-IDF, embeddings",
+      "level": 1
+    },
+    {
+      "name": "FastAPI + Docker (one repo)",
+      "level": 1
+    },
+    {
+      "name": "HTML, CSS",
+      "level": 3
+    },
+    {
+      "name": "JavaScript, React, Tailwind",
+      "level": 2
+    },
+    {
+      "name": "Git + GitHub",
+      "level": 2
+    }
+  ],
+  "links": [
+    [
+      "Site",
+      "https://malik-zain-555.github.io/Malik-Zain-555/"
+    ],
+    [
+      "GitHub",
+      "https://github.com/Malik-Zain-555"
+    ],
+    [
+      "LinkedIn",
+      "https://www.linkedin.com/in/malikzain555/"
+    ],
+    [
+      "itch.io",
+      "https://zikakito.itch.io/"
+    ]
+  ]
+}

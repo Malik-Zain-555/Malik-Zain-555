@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300" role="img" aria-label="Malik Zain. I learn by building, not by theory. Open the interactive version.">
+<title>Malik Zain. I learn by building, not by theory.</title>
+<defs><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="46"/></filter><clipPath id="c"><rect width="880" height="300" rx="22"/></clipPath></defs>
+<g clip-path="url(#c)"><rect width="880" height="300" fill="#2b3cff"/>
+<g filter="url(#b)"><circle cx="170" cy="70" r="120" fill="#ff6a2b"><animate attributeName="cx" values="170;300;170" dur="11s" repeatCount="indefinite"/><animate attributeName="cy" values="70;200;70" dur="13s" repeatCount="indefinite"/></circle>
+<circle cx="720" cy="240" r="130" fill="#ff6a2b"><animate attributeName="cx" values="720;560;720" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="470" cy="60" r="90" fill="#f4e8ff"><animate attributeName="cy" values="60;240;60" dur="14s" repeatCount="indefinite"/></circle></g>
+<text x="48" y="130" font-family="'Arial Black','Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" letter-spacing="-2" fill="#fff">I learn by building,</text>
+<text x="48" y="190" font-family="'Arial Black','Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" letter-spacing="-2" fill="#fff">not by theory.</text>
+<text x="50" y="238" font-family="'Segoe UI',Arial,sans-serif" font-size="19" fill="#fff">Malik Zain · AI/ML intern · BS CS · Islamabad</text>
+<g><rect x="650" y="232" width="190" height="40" rx="20" fill="#fff"/><text x="745" y="258" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="16" font-weight="700" fill="#0c0c16">Open the site</text>
+<animateTransform attributeName="transform" type="translate" values="0 0;0 -4;0 0" dur="2.2s" repeatCount="indefinite"/></g></g></svg>
